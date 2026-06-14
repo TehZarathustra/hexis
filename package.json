@@ -1,0 +1,23 @@
+{
+  "name": "hexis",
+  "version": "0.0.1",
+  "description": "",
+  "homepage": "https://github.com/tehzarathustra/hexis#readme",
+  "bugs": {
+    "url": "https://github.com/tehzarathustra/hexis/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tehzarathustra/hexis.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}
