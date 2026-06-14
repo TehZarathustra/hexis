@@ -14,10 +14,14 @@
   "author": "",
   "type": "module",
   "main": "index.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "bin": {
+    "hexis": "src/index.ts"
   },
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.9.3",
+    "eslint": "^10.5.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.0"
   }
 }

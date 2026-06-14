@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "strict": true,
+    "noEmit": true,
+    "types": ["node"]
+  }
+}
