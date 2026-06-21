@@ -3,9 +3,16 @@ import {sandbox} from './sandbox/index.ts';
 const normalizeArgv = ([_, __, ...cmds]: string[]) => cmds;
 
 export const resolver = (argv: string[]) => {
-  const args = normalizeArgv(argv);
+  const [cmd, ...params] = normalizeArgv(argv);
 
-  console.log('args >>>', args);
+  // in outer scope? build immideatly?
+  const cmds = {
+    ...sandbox()
+  };
 
-  sandbox();
+  const tool = cmds[cmd];
+
+  if (!tool) return console.log(`non existing tool: ${cmd}, try -h`);
+
+  console.log(tool(params));
 }
