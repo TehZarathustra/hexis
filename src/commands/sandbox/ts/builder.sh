@@ -14,6 +14,8 @@ FILE_PATH="${FOLDER_PATH}/${FILE_NAME}.ts"
 
 SESSION="sandbox-ts-${FILE_NAME}"
 
+NVIM_CMD="nvim ${FILE_NAME}.ts '+set makeprg=node\ %'"
+
 create_files() {
   mkdir -p "${FOLDER_PATH}"
   touch "${FILE_PATH}"
@@ -21,7 +23,7 @@ create_files() {
 
 create_tmux_session() {
   tmux new-session -d -s "${SESSION}" -c "${FOLDER_PATH}"
-  tmux send-keys -t "$SESSION" "nvim ${FILE_NAME}.ts" C-m
+  tmux send-keys -t "$SESSION" "$NVIM_CMD" C-m
 
   if in_tmux; then
     tmux switch-client -t "${SESSION}"
