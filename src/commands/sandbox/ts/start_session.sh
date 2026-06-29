@@ -1,20 +1,21 @@
 #!/usr/bin/env zsh
 
-source ../../../utils/tmux.sh
+ROOT="$hexis_path"
 
-# @TODO better path
-ROOT_PATH="../../../../files"
-CMD_PREFIX="ts"
-PREFIX="${NAME:+${NAME}-}"
+source "${hexis_path}/src/utils/tmux.sh"
+
 YEAR=$(date +"%Y")
 DATE=$(date +"%m%d%H%M%S")
-FOLDER_PATH="${ROOT_PATH}/${YEAR}"
+
+PREFIX="${NAME:+${NAME}-}"
+FOLDER_PATH="${ROOT}/files/${YEAR}"
 FILE_NAME="${PREFIX}${DATE}"
 FILE_PATH="${FOLDER_PATH}/${FILE_NAME}.ts"
 
 SESSION="sandbox-ts-${FILE_NAME}"
 
-NVIM_CMD="nvim ${FILE_NAME}.ts '+set makeprg=node\ %'"
+NVM_CMD="nvm use 24"
+NVIM_CMD="nvim ${FILE_NAME}.ts '+setlocal makeprg=node\ %'"
 
 create_files() {
   mkdir -p "${FOLDER_PATH}"
@@ -23,7 +24,7 @@ create_files() {
 
 create_tmux_session() {
   tmux new-session -d -s "${SESSION}" -c "${FOLDER_PATH}"
-  tmux send-keys -t "$SESSION" "$NVIM_CMD" C-m
+  tmux send-keys -t "$SESSION" "$NVM_CMD && $NVIM_CMD" C-m
 
   if in_tmux; then
     tmux switch-client -t "${SESSION}"
