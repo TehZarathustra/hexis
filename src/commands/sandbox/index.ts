@@ -16,7 +16,7 @@ export const sandbox = () => {
 
     if (!sandBoxToLaunch) return console.log(`not supported ${sb}`);
 
-    sandBoxToLaunch(params);
+    return sandBoxToLaunch(params);
   }
 
   return Object.fromEntries(aliases.map(a => [a, entry]));

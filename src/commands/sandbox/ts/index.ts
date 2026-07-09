@@ -1,26 +1,36 @@
 import {spawnSync} from 'node:child_process'
+import {resolve} from 'node:path';
+
+const {dirname} = import.meta;
 
 export const tsSandbox = () => {
-  console.log('TS sandbox launching...', process.cwd())
+  const root = resolve(dirname, '../../..');
+  const {script, ...rest} = {
+    script: resolve(dirname, 'start_session.sh'),
+    tmuxUtils: resolve(root, 'utils', 'tmux.sh'),
+    outputFolder: resolve(root, '..', 'files'),
+    // filename: also can specify filename directly
+  };
 
-  const cwd = process.cwd();
-  const scriptPath = `${cwd}/src/commands/sandbox/ts/start_session.sh`;
-
-  const res = spawnSync('sh', [scriptPath], {
+  const res = spawnSync('sh', [script], {
     env: {
       ...process.env,
-      hexis_path: cwd
+      ...rest,
     },
-    stdio: 'pipe',
+    // connect directly to terminal
+    // ie 'pipe' for i/o inside node (good for debug)
+    stdio: 'inherit',
     encoding: 'utf8'
-  })
+  });
 
   // debug
-  console.log({
-    error: res.error,
-    status: res.status,
-    signal: res.signal,
-    stdout: res.stdout,
-    stderr: res.stderr,
-  });
+  // console.log({
+  //   error: res.error,
+  //   status: res.status,
+  //   signal: res.signal,
+  //   stdout: res.stdout,
+  //   stderr: res.stderr,
+  // });
+
+  return `session is established: ${res.status}`;
 }

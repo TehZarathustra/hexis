@@ -1,14 +1,15 @@
 #!/usr/bin/env zsh
 
-ROOT="$hexis_path"
+TMUX_UTILS="$tmuxUtils"
+OUTPUT_FOLDER="$outputFolder"
 
-source "${hexis_path}/src/utils/tmux.sh"
+source "${TMUX_UTILS}"
 
 YEAR=$(date +"%Y")
 DATE=$(date +"%m%d%H%M%S")
 
 PREFIX="${NAME:+${NAME}-}"
-FOLDER_PATH="${ROOT}/files/${YEAR}"
+FOLDER_PATH="${OUTPUT_FOLDER}/${YEAR}"
 FILE_NAME="${PREFIX}${DATE}"
 FILE_PATH="${FOLDER_PATH}/${FILE_NAME}.ts"
 
