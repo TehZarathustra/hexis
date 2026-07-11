@@ -1,23 +1,23 @@
-// @TODO move into project-wide conf
-// const PATH
 import {tsSandbox} from './ts/index.ts';
 
 const aliases = ['sandbox', 'sb'] as const;
+const availableSandboxes = {
+  ts: tsSandbox,
+} as const;
+
+type Sandbox = keyof typeof availableSandboxes;
+
+const isSupported = (sb: string): sb is Sandbox =>
+  Object.hasOwn(availableSandboxes, sb);
 
 export const sandbox = () => {
   const entry = (_params: string[]) => {
     const [sb, ...params] = _params;
 
-    const availableSandboxes: Record<string, (p: unknown) => void> = {
-      ts: tsSandbox,
-    };
+    if (!isSupported(sb)) return `not supported ${sb}`;
 
-    const sandBoxToLaunch = availableSandboxes[sb];
-
-    if (!sandBoxToLaunch) return console.log(`not supported ${sb}`);
-
-    return sandBoxToLaunch(params);
-  }
+    return availableSandboxes[sb](params);
+  };
 
   return Object.fromEntries(aliases.map(a => [a, entry]));
 }
