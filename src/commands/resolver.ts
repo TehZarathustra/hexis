@@ -1,13 +1,16 @@
 import {sandbox} from './sandbox/index.ts';
+import {spells} from './spells/index.ts';
 
 const normalizeArgv = ([_, __, ...cmds]: string[]) => cmds;
+
+type Cmd = (params: string[]) => unknown;
 
 export const resolver = (argv: string[]) => {
   const [cmd, ...params] = normalizeArgv(argv);
 
-  // in outer scope? build immideatly?
-  const cmds = {
-    ...sandbox()
+  const cmds: Record<string, Cmd> = {
+    ...sandbox(),
+    ...spells(),
   };
 
   const tool = cmds[cmd];
