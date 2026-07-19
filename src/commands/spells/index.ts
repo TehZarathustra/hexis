@@ -25,7 +25,14 @@ export const spells = () => {
 
       if (!existsSync(spellPath)) return `${spell} is missing`;
 
-      return readFileSync(spellPath, 'utf8');
+      const result = readFileSync(spellPath, 'utf8');
+
+      const matchBackticks = (str: string) => str !== '```';
+
+      return result
+        .split('\n')
+        .filter(matchBackticks)
+        .join('\n');
     }
   };
 }
