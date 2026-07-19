@@ -6,33 +6,23 @@ import {readFileSync} from 'node:fs';
 // @TODO dotfile candidate
 // will build the config once i'm satisfied
 const SPELLS_PATH = 'obsidian-vault/8 – Tech/spells';
+const getSpellPath = (spell: string) => resolve(
+  homedir(),
+  SPELLS_PATH,
+  `${spell}.md`
+);
 
-// @TODO should think about ADT interface
-// and better effect composition
-// for now it's small and imperative
-// acceptable for what it is
-export const spells = () => {
-  return {
-    // effects in question: validate & read
-    spells: ([spell]: string[]) => {
-      if (!spell) return 'cannot list spells yet';
+export const spells = () => ({
+  spells: ([spell]: string[]) => {
+    if (!spell) return 'cannot list spells yet';
 
-      const spellPath = resolve(
-        homedir(),
-        SPELLS_PATH,
-        `${spell}.md`
-      );
+    const path = getSpellPath(spell);
 
-      if (!existsSync(spellPath)) return `${spell} is missing`;
+    if (!existsSync(path)) return `${spell} is missing`;
 
-      const result = readFileSync(spellPath, 'utf8');
-
-      const matchBackticks = (str: string) => str !== '```';
-
-      return result
-        .split('\n')
-        .filter(matchBackticks)
-        .join('\n');
-    }
-  };
-}
+    return readFileSync(path, 'utf8')
+      .split('\n')
+      .filter(line => !line.startsWith('```'))
+      .join('\n');
+  }
+});
