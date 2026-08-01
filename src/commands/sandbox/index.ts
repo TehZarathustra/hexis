@@ -1,5 +1,6 @@
 import {tsSandbox} from './ts/index.ts';
 import {typstSandbox} from './typst/index.ts';
+import {reactSandbox} from './react/index.ts';
 
 // main command aliases
 const aliases = ['sandbox', 'sb'] as const;
@@ -11,7 +12,9 @@ const availableSandboxes = {
   typescript: tsSandbox,
   // typst aliases
   typst: typstSandbox,
-  typ: typstSandbox
+  typ: typstSandbox,
+  // react aliases
+  react: reactSandbox
 } as const;
 
 type Sandbox = keyof typeof availableSandboxes;
@@ -23,7 +26,7 @@ export const sandbox = () => {
   const entry = (_params: string[]) => {
     const [sb, ...params] = _params;
 
-    if (!isSupported(sb)) return `not supported ${sb}`;
+    if (!isSupported(sb)) return `not supported: ${sb}`;
 
     return availableSandboxes[sb](params);
   };
