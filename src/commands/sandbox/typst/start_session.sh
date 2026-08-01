@@ -17,7 +17,6 @@ FILE_PATH="${FOLDER_PATH}/${FILE_NAME}"
 FILE_OUTPUT_PATH="${FOLDER_PATH}/${FILE_OUTPUT_NAME}"
 
 SESSION="sandbox-typst-${ID}"
-NVM_CMD="nvm use 24"
 
 # `+setlocal makeprg` is kinda unneseccary since
 # it meant to run in watch mode
@@ -31,7 +30,7 @@ create_files() {
 create_tmux_session() {
   tmux new-session -d -s "${SESSION}" -c "${FOLDER_PATH}"
   tmux new-window -t "${SESSION}" -n compile
-  tmux send-keys -t "$SESSION:0" "$NVM_CMD && $NVIM_CMD" C-m
+  tmux send-keys -t "$SESSION:0" "$NVIM_CMD" C-m
   tmux send-keys -t "$SESSION:1" "typst watch $FILE_PATH" C-m
   tmux select-window -t "$SESSION:0"
 }
