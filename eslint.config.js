@@ -1,3 +1,3 @@
-import config from '@coral/eslint-config';
+import config from '@coral/eslint-config'
 
-export default config;
+export default config
