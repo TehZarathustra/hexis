@@ -11,6 +11,7 @@ export const reactSandbox = (_: unknown) => {
     script: resolve(dirname, 'start_session.sh'),
     tmuxUtils: resolve(root, 'utils', 'tmux.sh'),
     outputFolder: resolve(root, '..', 'files', FOLDER_NAME),
+    template: resolve(dirname, 'src'),
   };
 
   const res = spawnSync('sh', [script], {
