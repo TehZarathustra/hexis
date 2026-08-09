@@ -1,6 +1,7 @@
 import {sandbox} from './sandbox/index.ts';
 import {spells} from './spells/index.ts';
 import {focus} from './focus/index.ts';
+import {styleText} from 'node:util';
 
 const normalizeArgv = ([_, __, ...cmds]: string[]) => cmds;
 
@@ -23,5 +24,5 @@ export const resolver = (argv: string[]) => {
 }
 
 const hexisOut = (str: string) => console.log(
-  `> hexis out: ${str}`
+  styleText('gray', str)
 );

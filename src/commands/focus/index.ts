@@ -35,7 +35,7 @@ const start = () => {
   const process = runProcess(shScripts.blockHosts);
 
   return isSuccess(process)
-    ? 'hosts has been blocked. restart the browser'
+    ? 'hosts has been blocked'
     : 'error: could not block the host';
 };
 
@@ -43,7 +43,7 @@ const stop = () => {
   const process = runProcess(shScripts.unblockBlockHosts);
 
   return isSuccess(process)
-    ? 'hosts has been unblocked. restart the browser'
+    ? 'hosts has been unblocked'
     : 'error: could not unblock the host';
 }
 
