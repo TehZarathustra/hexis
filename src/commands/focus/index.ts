@@ -1,7 +1,10 @@
 import {spawnSync} from 'node:child_process';
 import {resolve} from 'node:path';
+import {readFileSync} from 'node:fs';
 
 const {dirname} = import.meta;
+
+const START_MARKER = '# hexis focus start';
 
 const shScripts = {
   clear: resolve(dirname, 'clear.awk'),
@@ -42,6 +45,15 @@ const commands = {
       ? 'hosts has been unblocked. restart the browser'
       : 'error: could not unblock the host';
   },
+  toggle: () => {
+    const hosts = readFileSync('/etc/hosts', 'utf8');
+
+    return (
+      hosts.includes(START_MARKER)
+        ? commands.stop
+        : commands.start
+    )();
+  }
 } as const;
 
 type Commands = typeof commands;
@@ -52,6 +64,8 @@ const isSupported = (cmd: string): cmd is keyof Commands =>
 export const focus = () => {
   return {
     focus: ([cmd]: string[]) => {
+      if (!cmd) return commands.toggle();
+
       return isSupported(cmd)
         ? commands[cmd]()
         : `${cmd}: unsupported cmd`;
