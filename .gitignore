@@ -1,3 +1,4 @@
 node_modules
 src/commands/sandbox/react/src/
 files
+template__test/
