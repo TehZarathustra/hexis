@@ -4,13 +4,19 @@ import {resolve} from 'node:path';
 const {dirname} = import.meta;
 
 const shScripts = {
+  clear: resolve(dirname, 'clear.awk'),
+  hostsToBlock: resolve(dirname, 'hosts_to_block'),
   blockHosts: resolve(dirname, 'block_hosts.sh'),
   unblockBlockHosts: resolve(dirname, 'unblock_hosts.sh'),
 } as const;
 
 const runProcess = (scriptPath: string) => {
   const res = spawnSync('sh', [scriptPath], {
-    env: {...process.env},
+    env: {
+      ...process.env,
+      clear: shScripts.clear,
+      hostsToBlock: shScripts.hostsToBlock,
+    },
     stdio: 'inherit',
     encoding: 'utf8'
   });
@@ -22,8 +28,8 @@ const isSuccess = (processStatus: number | null) =>
   processStatus === 0;
 
 type Commands = {
-  block: () => void;
-  unblock: () => void;
+  block: () => string;
+  unblock: () => string;
 };
 
 const commands: Commands = {
