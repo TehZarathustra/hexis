@@ -5,6 +5,7 @@ import {readFileSync} from 'node:fs';
 const {dirname} = import.meta;
 
 const START_MARKER = '# hexis focus start';
+const HOSTS = '/etc/hosts';
 
 const shScripts = {
   clear: resolve(dirname, 'clear.awk'),
@@ -46,11 +47,8 @@ const stop = () => {
     : 'error: could not unblock the host';
 }
 
-const toggle = () => {
-  const hosts = readFileSync('/etc/hosts', 'utf8');
-
-  return (hosts.includes(START_MARKER) ? stop : start)();
-}
+const toggle = () => (readFileSync(HOSTS, 'utf8')
+  .includes(START_MARKER) ? stop : start)();
 
 const commands = {start, stop, toggle} as const;
 
