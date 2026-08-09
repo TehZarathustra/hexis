@@ -30,31 +30,29 @@ const runProcess = (scriptPath: string) => {
 const isSuccess = (processStatus: number | null) =>
   processStatus === 0;
 
-const commands = {
-  start: () => {
-    const process = runProcess(shScripts.blockHosts);
+const start = () => {
+  const process = runProcess(shScripts.blockHosts);
 
-    return isSuccess(process)
-      ? 'hosts has been blocked. restart the browser'
-      : 'error: could not block the host';
-  },
-  stop: () => {
-    const process = runProcess(shScripts.unblockBlockHosts);
+  return isSuccess(process)
+    ? 'hosts has been blocked. restart the browser'
+    : 'error: could not block the host';
+};
 
-    return isSuccess(process)
-      ? 'hosts has been unblocked. restart the browser'
-      : 'error: could not unblock the host';
-  },
-  toggle: () => {
-    const hosts = readFileSync('/etc/hosts', 'utf8');
+const stop = () => {
+  const process = runProcess(shScripts.unblockBlockHosts);
 
-    return (
-      hosts.includes(START_MARKER)
-        ? commands.stop
-        : commands.start
-    )();
-  }
-} as const;
+  return isSuccess(process)
+    ? 'hosts has been unblocked. restart the browser'
+    : 'error: could not unblock the host';
+}
+
+const toggle = () => {
+  const hosts = readFileSync('/etc/hosts', 'utf8');
+
+  return (hosts.includes(START_MARKER) ? stop : start)();
+}
+
+const commands = {start, stop, toggle} as const;
 
 type Commands = typeof commands;
 
