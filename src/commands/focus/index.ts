@@ -27,27 +27,24 @@ const runProcess = (scriptPath: string) => {
 const isSuccess = (processStatus: number | null) =>
   processStatus === 0;
 
-type Commands = {
-  block: () => string;
-  unblock: () => string;
-};
-
-const commands: Commands = {
-  block: () => {
+const commands = {
+  start: () => {
     const process = runProcess(shScripts.blockHosts);
 
     return isSuccess(process)
       ? 'hosts has been blocked. restart the browser'
       : 'error: could not block the host';
   },
-  unblock: () => {
+  stop: () => {
     const process = runProcess(shScripts.unblockBlockHosts);
 
     return isSuccess(process)
       ? 'hosts has been unblocked. restart the browser'
       : 'error: could not unblock the host';
   },
-};
+} as const;
+
+type Commands = typeof commands;
 
 const isSupported = (cmd: string): cmd is keyof Commands =>
   Object.hasOwn(commands, cmd);
