@@ -21,8 +21,6 @@ export const resolver = (argv: string[]) => {
   return tool
     ? hexisOut(tool(params))
     : hexisOut(`non existing tool: ${cmd}, try -h`);
-}
+};
 
-const hexisOut = (str: string) => console.log(
-  styleText('gray', str)
-);
+const hexisOut = (str: string) => console.log(styleText('gray', str));

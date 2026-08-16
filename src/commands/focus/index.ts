@@ -22,14 +22,13 @@ const runProcess = (scriptPath: string) => {
       hostsToBlock: shScripts.hostsToBlock,
     },
     stdio: 'inherit',
-    encoding: 'utf8'
+    encoding: 'utf8',
   });
 
   return res.status;
 };
 
-const isSuccess = (processStatus: number | null) =>
-  processStatus === 0;
+const isSuccess = (processStatus: number | null) => processStatus === 0;
 
 const start = () => {
   const process = runProcess(shScripts.blockHosts);
@@ -45,10 +44,10 @@ const stop = () => {
   return isSuccess(process)
     ? 'hosts has been unblocked'
     : 'error: could not unblock the host';
-}
+};
 
-const toggle = () => (readFileSync(HOSTS, 'utf8')
-  .includes(START_MARKER) ? stop : start)();
+const toggle = () =>
+  (readFileSync(HOSTS, 'utf8').includes(START_MARKER) ? stop : start)();
 
 const commands = {start, stop, toggle} as const;
 
@@ -62,9 +61,7 @@ export const focus = () => {
     focus: ([cmd]: string[]) => {
       if (!cmd) return commands.toggle();
 
-      return isSupported(cmd)
-        ? commands[cmd]()
-        : `${cmd}: unsupported cmd`;
-    }
-  }
-}
+      return isSupported(cmd) ? commands[cmd]() : `${cmd}: unsupported cmd`;
+    },
+  };
+};

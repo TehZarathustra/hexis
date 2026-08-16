@@ -16,7 +16,7 @@ export const typstSandbox = (_: unknown) => {
   const res = spawnSync('sh', [script], {
     env: {...process.env, ...rest},
     stdio: 'inherit',
-    encoding: 'utf8'
+    encoding: 'utf8',
   });
 
   return `session is established: ${res.status}`;

@@ -21,7 +21,7 @@ export const tsSandbox = (_: unknown) => {
     // 'inherit' connects directly to terminal
     // i.e 'pipe' for i/o inside node (good for debug)
     stdio: 'inherit',
-    encoding: 'utf8'
+    encoding: 'utf8',
   });
 
   return `session is established: ${res.status}`;

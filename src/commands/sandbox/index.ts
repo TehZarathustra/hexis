@@ -14,7 +14,7 @@ const availableSandboxes = {
   typst: typstSandbox,
   typ: typstSandbox,
   // react aliases
-  react: reactSandbox
+  react: reactSandbox,
 } as const;
 
 type Sandbox = keyof typeof availableSandboxes;
@@ -32,4 +32,4 @@ export const sandbox = () => {
   };
 
   return Object.fromEntries(aliases.map(a => [a, entry]));
-}
+};
