@@ -6,11 +6,8 @@ import {readFileSync} from 'node:fs';
 // @TODO dotfile candidate
 // will build the config once i'm satisfied
 const SPELLS_PATH = 'obsidian-vault/8 – Tech/spells';
-const getSpellPath = (spell: string) => resolve(
-  homedir(),
-  SPELLS_PATH,
-  `${spell}.md`
-);
+const getSpellPath = (spell: string) =>
+  resolve(homedir(), SPELLS_PATH, `${spell}.md`);
 
 export const spells = () => ({
   spells: ([spell]: string[]) => {
@@ -24,5 +21,5 @@ export const spells = () => ({
       .split('\n')
       .filter(line => !line.startsWith('```'))
       .join('\n');
-  }
+  },
 });

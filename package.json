@@ -6,22 +6,27 @@
   "bugs": {
     "url": "https://github.com/tehzarathustra/hexis/issues"
   },
+  "license": "MIT",
+  "author": "",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tehzarathustra/hexis.git"
   },
-  "license": "MIT",
-  "author": "",
-  "type": "module",
-  "main": "index.ts",
   "bin": {
     "hexis": "src/index.ts"
   },
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+  },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@types/node": "^25.9.3",
-    "eslint": "^10.5.0",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.65.0"
+    "oxfmt": "^0.63.0",
+    "oxlint": "^1.78.0",
+    "typescript": "^6.0.3"
   }
 }
