@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 TMUX_UTILS="$tmuxUtils"
-OUTPUT_FOLDER="$outputFolder"
+DIRECTORY="$directory"
 
 source "${TMUX_UTILS}"
 
@@ -9,7 +9,7 @@ YEAR=$(date +"%Y")
 DATE=$(date +"%m%d%H%M%S")
 
 PREFIX="${NAME:+${NAME}-}"
-FOLDER_PATH="${OUTPUT_FOLDER}/${YEAR}"
+FOLDER_PATH="${DIRECTORY}/${YEAR}"
 FILE_NAME="${PREFIX}${DATE}"
 FILE_PATH="${FOLDER_PATH}/${FILE_NAME}.ts"
 
