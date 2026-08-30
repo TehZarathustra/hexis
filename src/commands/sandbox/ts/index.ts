@@ -1,4 +1,5 @@
 import {spawnSync} from 'node:child_process';
+import {existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 
 const {dirname} = import.meta;
@@ -22,6 +23,8 @@ const ACTIONS = {
     directory: resolve(root, '..', 'files', PARENT_FOLDER),
   }),
   resume: (dir: string) => {
+    const directory = resolve(root, '..', 'files', PARENT_FOLDER, dir);
+
     const error = (reason: string): Action => ({
       type: 'error',
       reason,
@@ -30,12 +33,12 @@ const ACTIONS = {
     const ready = (): Action => ({
       type: 'ready',
       script: resolve(dirname, 'resume_session.sh'),
-      directory: resolve(root, '..', 'files', PARENT_FOLDER, dir),
+      directory,
     });
 
-    return !dir
-      ? error('session path is not specified')
-      : ready();
+    return existsSync(directory)
+      ? ready()
+      : error(`session doesn't exist: ${dir}`);
   },
 } satisfies ActionResolvers;
 
