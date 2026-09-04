@@ -1,11 +1,12 @@
 import {spawnSync} from 'node:child_process';
 import {existsSync} from 'node:fs';
-import {resolve} from 'node:path';
-
-const {dirname} = import.meta;
-const root = resolve(dirname, '../../..');
-
-const PARENT_FOLDER = 'ts';
+import {
+  getParentDir,
+  getResumeSH,
+  getStartSH,
+  getTargetDir,
+  getTmuxUtils
+} from './config.ts';
 
 type Action =
   | {type: 'ready'; script: string; directory: string}
@@ -19,11 +20,11 @@ type ActionResolvers = Record<
 const ACTIONS = {
   create: () => ({
     type: 'ready',
-    script: resolve(dirname, 'start_session.sh'),
-    directory: resolve(root, '..', 'files', PARENT_FOLDER),
+    script: getStartSH(),
+    directory: getParentDir(),
   }),
   resume: (dir: string) => {
-    const directory = resolve(root, '..', 'files', PARENT_FOLDER, dir);
+    const targetDirectory = getTargetDir(dir);
 
     const error = (reason: string): Action => ({
       type: 'error',
@@ -32,11 +33,11 @@ const ACTIONS = {
 
     const ready = (): Action => ({
       type: 'ready',
-      script: resolve(dirname, 'resume_session.sh'),
-      directory,
+      script: getResumeSH(),
+      directory: targetDirectory,
     });
 
-    return existsSync(directory)
+    return existsSync(targetDirectory)
       ? ready()
       : error(`session doesn't exist: ${dir}`);
   },
@@ -58,7 +59,7 @@ export const tsSandbox = ([cmd, target]: string[]) => {
     env: {
       ...process.env,
       ...opts,
-      tmuxUtils: resolve(root, 'utils', 'tmux.sh')
+      tmuxUtils: getTmuxUtils(),
     },
     // 'inherit' connects directly to terminal
     // i.e 'pipe' for i/o inside node (good for debug)
