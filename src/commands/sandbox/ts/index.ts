@@ -4,12 +4,18 @@ import {
   getParentDir,
   getResumeSH,
   getStartSH,
-  getTargetDir,
+  getTargetFile,
   getTmuxUtils
 } from './config.ts';
 
 type Action =
-  | {type: 'ready'; script: string; directory: string}
+  | {type: 'start'; script: string; directory: string}
+  | {
+      type: 'resume';
+      script: string;
+      directory: string;
+      fileName: string;
+    }
   | {type: 'error'; reason: string};
 
 type ActionResolvers = Record<
@@ -19,12 +25,13 @@ type ActionResolvers = Record<
 
 const ACTIONS = {
   create: () => ({
-    type: 'ready',
+    type: 'start',
     script: getStartSH(),
     directory: getParentDir(),
   }),
-  resume: (dir: string) => {
-    const targetDirectory = getTargetDir(dir);
+  resume: (location: string) => {
+    const targetFile = getTargetFile(location);
+    const [year, fileName] = location.split('/');
 
     const error = (reason: string): Action => ({
       type: 'error',
@@ -32,14 +39,15 @@ const ACTIONS = {
     });
 
     const ready = (): Action => ({
-      type: 'ready',
+      type: 'resume',
       script: getResumeSH(),
-      directory: targetDirectory,
+      directory: getParentDir(year),
+      fileName,
     });
 
-    return existsSync(targetDirectory)
+    return existsSync(targetFile)
       ? ready()
-      : error(`session doesn't exist: ${dir}`);
+      : error(`session doesn't exist: ${location}`);
   },
 } satisfies ActionResolvers;
 
