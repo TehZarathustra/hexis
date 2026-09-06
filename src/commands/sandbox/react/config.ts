@@ -11,9 +11,14 @@ export const getStartSH = () => resolve(dirname, START_SH);
 export const getResumeSH = () => resolve(dirname, RESUME_SH);
 
 // global conf candidate?
-export const getTmuxUtils = () => resolve(root, 'utils', 'tmux.sh');
+export const getTmuxUtils = () =>
+  resolve(root, 'utils', 'tmux.sh');
 
-export const getParentDir = (addon: string = '') =>
-  resolve(root, '..', 'files', PARENT_DIR, addon);
+export const getParentDir = () =>
+  resolve(root, '..', 'files', PARENT_DIR);
 
-export const getTemplateDir = () => resolve(dirname, 'src');
+export const getTargetDir = (dirname: string) =>
+  resolve(getParentDir(), dirname);
+
+export const getTemplateDir = () =>
+  resolve(dirname, 'src');

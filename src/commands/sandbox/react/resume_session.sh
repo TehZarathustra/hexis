@@ -1,39 +1,21 @@
 #!/usr/bin/env zsh
 
 TMUX_UTILS="$tmuxUtils"
-DIRECTORY="$directory"
-TEMPLATE_DIR="$templateDir"
+DIR_PATH="$directory"
+SESSION="$name"
 
 source "${TMUX_UTILS}"
 
-YEAR=$(date +"%Y")
-DATE=$(date +"%m%d%H%M%S")
+SESSION="sandbox-react-${SESSION}"
 
-PREFIX="${NAME:+${NAME}-}"
-ID="${PREFIX}${DATE}"
-DIR_PATH="${DIRECTORY}/${YEAR}/${ID}"
-
-SESSION="sandbox-react-${ID}"
-
-VITE_INIT_CMD="npm create vite sandbox -- --template react-ts --no-interactive"
-VITE_POST_CMD="mv ./sandbox/* ./ && rm -rf sandbox"
-VITE_NPMRC="echo 'registry=https://registry.npmjs.org/' > .npmrc"
 OPEN_BROWSER="open -a 'Brave Browser' http://localhost:5173"
 VITE_INSTALL="npm i && npm run dev"
-
-create_files() {
-  mkdir -p "${DIR_PATH}"
-}
 
 create_tmux_session() {
   tmux new-session -d -s "${SESSION}" -c "${DIR_PATH}"
 
   # send vite cmd
-  tmux send-keys -t "$SESSION" "$VITE_INIT_CMD" C-m
-  tmux send-keys -t "$SESSION" "$VITE_POST_CMD" C-m
-  tmux send-keys -t "$SESSION" "$VITE_NPMRC" C-m
   tmux send-keys -t "$SESSION" "$VITE_INSTALL & $OPEN_BROWSER" C-m
-  tmux send-keys -t "$SESSION" "cp -rf ${TEMPLATE_DIR} ${DIR_PATH}" C-m
 
   # split?
   tmux split-window -v -b -t "$SESSION" -c "${DIR_PATH}"
@@ -53,7 +35,6 @@ wait_and_zoom() {
   tmux resize-pane -Z -t "$SESSION:0.0"
 }
 
-create_files
 create_tmux_session
 create_alacritty_window
 wait_and_zoom
