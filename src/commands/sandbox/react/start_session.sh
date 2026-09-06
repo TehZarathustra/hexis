@@ -27,12 +27,14 @@ create_files() {
 
 create_tmux_session() {
   tmux new-session -d -s "${SESSION}" -c "${FOLDER_PATH}"
+
   # send vite cmd
   tmux send-keys -t "$SESSION" "$VITE_INIT_CMD" C-m
   tmux send-keys -t "$SESSION" "$VITE_POST_CMD" C-m
   tmux send-keys -t "$SESSION" "$VITE_NPMRC" C-m
   tmux send-keys -t "$SESSION" "$VITE_INSTALL & $OPEN_BROWSER" C-m
   tmux send-keys -t "$SESSION" "cp -rf ${TEMPLATE} ${FOLDER_PATH}/sandbox/" C-m
+
   # split?
   tmux split-window -v -b -t "$SESSION" -c "${FOLDER_PATH}/sandbox"
   tmux send-keys -t "$SESSION:0.0" "nvim" C-m
