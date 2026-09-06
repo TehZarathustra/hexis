@@ -51,8 +51,6 @@ const ACTIONS = {
       name,
     });
 
-    console.log(ready());
-
     return existsSync(targetDir)
       ? ready()
       : error(`session doesn't exist: ${location}`);
