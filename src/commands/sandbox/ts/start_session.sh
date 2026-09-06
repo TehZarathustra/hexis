@@ -28,11 +28,7 @@ create_tmux_session() {
   tmux new-session -d -s "${SESSION}" -c "${FOLDER_PATH}"
   tmux send-keys -t "$SESSION" "$NVIM_CMD" C-m
 
-  if in_tmux; then
-    tmux switch-client -t "${SESSION}"
-  else
-    tmux attach -t "${SESSION}"
-  fi
+  tmux_smart_attach $SESSION
 }
 
 create_files
