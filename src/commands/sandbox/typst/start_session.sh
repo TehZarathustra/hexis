@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 TMUX_UTILS="$tmuxUtils"
-OUTPUT_FOLDER="$outputFolder"
+DIRECTORY="$directory"
 
 source "${TMUX_UTILS}"
 
@@ -10,11 +10,11 @@ DATE=$(date +"%m%d%H%M%S")
 
 PREFIX="${NAME:+${NAME}-}"
 ID="${PREFIX}${DATE}"
-FOLDER_PATH="${OUTPUT_FOLDER}/${YEAR}/${ID}"
+DIR_PATH="${DIRECTORY}/${YEAR}/${ID}"
 FILE_NAME="${ID}.typ"
 FILE_OUTPUT_NAME="${ID}.pdf"
-FILE_PATH="${FOLDER_PATH}/${FILE_NAME}"
-FILE_OUTPUT_PATH="${FOLDER_PATH}/${FILE_OUTPUT_NAME}"
+FILE_PATH="${DIR_PATH}/${FILE_NAME}"
+FILE_OUTPUT_PATH="${DIR_PATH}/${FILE_OUTPUT_NAME}"
 
 SESSION="sandbox-typst-${ID}"
 
@@ -23,12 +23,12 @@ SESSION="sandbox-typst-${ID}"
 NVIM_CMD="nvim ${FILE_NAME}"
 
 create_files() {
-  mkdir -p "${FOLDER_PATH}"
+  mkdir -p "${DIR_PATH}"
   touch "${FILE_PATH}"
 }
 
 create_tmux_session() {
-  tmux new-session -d -s "${SESSION}" -c "${FOLDER_PATH}"
+  tmux new-session -d -s "${SESSION}" -c "${DIR_PATH}"
   tmux new-window -t "${SESSION}" -n compile
   tmux send-keys -t "$SESSION:0" "$NVIM_CMD" C-m
   tmux send-keys -t "$SESSION:1" "typst watch $FILE_PATH" C-m
@@ -39,7 +39,7 @@ create_tmux_session() {
 create_alacritty_window() {
   alacritty msg create-window \
     --title "${SESSION}" \
-    --working-directory "${FOLDER_PATH}" \
+    --working-directory "${DIR_PATH}" \
     --command "$(command -v tmux)" attach-session -t "${SESSION}"
 }
 
