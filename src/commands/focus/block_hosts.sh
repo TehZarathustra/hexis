@@ -2,8 +2,8 @@
 
 CLEAR="$clear"
 HOSTS_TO_BLOCK="$hostsToBlock"
+HOSTS_TEMP="$tempHosts"
 
-rm -f hosts\
-&& awk -f "$CLEAR" /etc/hosts > hosts\
-&& cat "$HOSTS_TO_BLOCK" >> hosts\
-&& sudo mv hosts /etc/hosts
+awk -f "$CLEAR" /etc/hosts > "$HOSTS_TEMP"\
+&& cat "$HOSTS_TO_BLOCK" >> "$HOSTS_TEMP"\
+&& sudo mv "$HOSTS_TEMP" /etc/hosts

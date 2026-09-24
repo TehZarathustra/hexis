@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 CLEAR="$clear"
+HOSTS_TEMP="$tempHosts"
 
-rm -f hosts\
-&& awk -f "$CLEAR" /etc/hosts > hosts\
-&& sudo mv hosts /etc/hosts
+awk -f "$CLEAR" /etc/hosts > "$HOSTS_TEMP"\
+&& sudo mv "$HOSTS_TEMP" /etc/hosts

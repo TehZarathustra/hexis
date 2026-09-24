@@ -12,6 +12,7 @@ const shScripts = {
   hostsToBlock: resolve(dirname, 'hosts_to_block'),
   blockHosts: resolve(dirname, 'block_hosts.sh'),
   unblockBlockHosts: resolve(dirname, 'unblock_hosts.sh'),
+  tempHosts: resolve(dirname, 'hosts'),
 } as const;
 
 const runProcess = (scriptPath: string) => {
@@ -20,6 +21,7 @@ const runProcess = (scriptPath: string) => {
       ...process.env,
       clear: shScripts.clear,
       hostsToBlock: shScripts.hostsToBlock,
+      tempHosts: shScripts.tempHosts,
     },
     stdio: 'inherit',
     encoding: 'utf8',
